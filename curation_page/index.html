@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Story: 2026년 1호 | SKKU Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --skku-green: #00843D;
+    --skku-green-light: #7AB648;
+    --skku-navy: #003B6F;
+    --bg: #fafafa;
+    --text: #1a1a1a;
+    --text-muted: #666;
+    --border: #e5e5e5;
+    --max-w: 1080px;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== HEADER ===== */
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-logo img {
+    height: 56px;
+    display: block;
+  }
+
+  .header-series {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--skku-green);
+    letter-spacing: 0.5px;
+  }
+
+  .header-series span {
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  /* ===== BANNER ===== */
+  .banner {
+    background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 40%, #243b55 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0,132,61,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .banner-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 60px 24px;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 48px;
+    align-items: center;
+  }
+
+  /* Banner Left: Card News */
+  .banner-card {
+    position: relative;
+    z-index: 1;
+  }
+
+  .banner-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--skku-green-light);
+    margin-bottom: 16px;
+    padding: 4px 12px;
+    border: 1px solid rgba(122,182,72,0.3);
+    border-radius: 20px;
+  }
+
+  .banner-headline {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 20px;
+    word-break: keep-all;
+  }
+
+  .banner-headline em {
+    font-style: normal;
+    color: var(--skku-green-light);
+  }
+
+  .banner-desc {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.8;
+    color: rgba(255,255,255,0.75);
+    word-break: keep-all;
+  }
+
+  .banner-meta {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    gap: 24px;
+  }
+
+  .banner-meta-item {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .banner-meta-item strong {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  /* Banner Right: Phone Frame */
+  .phone-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .phone-frame {
+    width: 300px;
+    height: 600px;
+    background: #111;
+    border-radius: 36px;
+    padding: 12px;
+    box-shadow:
+      0 0 0 2px #333,
+      0 20px 60px rgba(0,0,0,0.5),
+      inset 0 0 0 1px rgba(255,255,255,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phone-notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 22px;
+    background: #111;
+    border-radius: 0 0 14px 14px;
+    z-index: 10;
+  }
+
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .phone-screen video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .phone-caption {
+    margin-top: 14px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== SECTION COMMON ===== */
+  .section {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 64px 24px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--skku-green);
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 32px;
+    line-height: 1.4;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ===== LONGFORM VIDEO ===== */
+  .video-container {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  }
+
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+
+  .video-meta {
+    margin-top: 20px;
+    padding: 16px 20px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .video-meta-text h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.5;
+  }
+
+  .video-meta-text p {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .video-meta-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--skku-green);
+    background: rgba(0,132,61,0.08);
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  /* ===== MAGAZINE VIEWER ===== */
+  .magazine-viewer {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+
+  .magazine-iframe-wrap {
+    width: 100%;
+    height: 750px;
+    overflow: hidden;
+    position: relative;
+    background: #e8e8e8;
+  }
+
+  .magazine-iframe-wrap iframe {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 210mm;
+    height: 297mm;
+    border: none;
+    transform-origin: top center;
+  }
+
+  .magazine-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    background: #fafafa;
+  }
+
+  .mag-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mag-btn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--text);
+    transition: all 0.15s;
+  }
+
+  .mag-btn:hover { background: #f0f0f0; border-color: #ccc; }
+  .mag-btn:disabled { opacity: 0.3; cursor: default; }
+
+  .mag-page {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    min-width: 60px;
+    text-align: center;
+  }
+
+  .mag-actions {
+    display: flex;
+    gap: 8px;
+  }
+
+  .mag-action-btn {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mag-action-btn:hover { background: #f0f0f0; border-color: #ccc; }
+
+  .mag-action-btn.primary {
+    background: var(--skku-green);
+    color: #fff;
+    border-color: var(--skku-green);
+  }
+
+  .mag-action-btn.primary:hover { background: #006e32; }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    background: #1a1a1a;
+    color: rgba(255,255,255,0.4);
+    padding: 40px 24px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  .footer strong {
+    color: rgba(255,255,255,0.6);
+    font-weight: 500;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .banner-inner {
+      grid-template-columns: 1fr;
+      padding: 40px 20px;
+      gap: 32px;
+    }
+
+    .banner-headline { font-size: 26px; }
+    .banner-desc { font-size: 14px; }
+
+    .phone-wrapper { order: -1; }
+    .phone-frame { width: 240px; height: 480px; }
+
+    .section { padding: 48px 20px; }
+    .section-title { font-size: 22px; }
+
+    .magazine-iframe-wrap { height: 500px; }
+
+    .video-meta { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <img src="assets/skku-logo.jpg" alt="Sungkyunkwan University">
+    </div>
+    <div class="header-series">
+      Research Story <span>: 2026년 1호</span>
+    </div>
+  </div>
+</header>
+
+<!-- ===== BANNER ===== -->
+<section class="banner">
+  <div class="banner-inner">
+
+    <!-- Left: Card News Headline -->
+    <div class="banner-card">
+      <div class="banner-tag">Financial Stability Report</div>
+      <h1 class="banner-headline">
+        서울 집값 <em>18%</em> 폭등,<br>
+        지방은 <em>-26%</em> 폭락<br>
+        <span style="font-size:0.7em; font-weight:700; color:rgba(255,255,255,0.85);">한국 주택시장에 무슨 일이?</span>
+      </h1>
+      <p class="banner-desc">
+        한국은행이 경고하는 3가지 구조적 위험 신호.<br>
+        전세 시대의 종말, 월세 60% 시대가 온다.<br>
+        서울과 지방, 두 개의 대한민국이 만드는 금융 리스크.
+      </p>
+      <div class="banner-meta">
+        <div class="banner-meta-item">
+          <strong>Authors</strong>
+          Kim Dongwook &middot; Kim Woo-seob
+        </div>
+        <div class="banner-meta-item">
+          <strong>Source</strong>
+          Bank of Korea, Dec 2025
+        </div>
+        <div class="banner-meta-item">
+          <strong>Topic</strong>
+          Housing &middot; Financial Stability
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Phone Frame with Short Video -->
+    <div class="phone-wrapper">
+      <div class="phone-frame">
+        <div class="phone-notch"></div>
+        <div class="phone-screen">
+          <video
+            src="assets/short-video.mp4"
+            playsinline
+            muted
+            loop
+            autoplay
+            poster=""
+          ></video>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== LONGFORM VIDEO ===== -->
+<hr class="section-divider">
+<section class="section">
+  <div class="section-label">Deep Dive</div>
+  <h2 class="section-title">논문 심층 해설</h2>
+  <div class="video-container">
+    <iframe
+      src="https://www.youtube.com/embed/2O8Ae6ilEys?rel=0"
+      title="논문 심층 해설 영상"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+  <div class="video-meta">
+    <div class="video-meta-text">
+      <h3>Characteristics of Recent Housing Market and Impact on Financial System</h3>
+      <p>Kim Dongwook, Kim Woo-seob &middot; Bank of Korea, Financial Stability Report &middot; December 2025</p>
+    </div>
+    <div class="video-meta-badge">pp. 115&ndash;125</div>
+  </div>
+</section>
+
+<!-- ===== MAGAZINE VIEWER ===== -->
+<hr class="section-divider">
+<section class="section">
+  <div class="section-label">Research Magazine</div>
+  <h2 class="section-title">AI 분석 리포트</h2>
+  <div class="magazine-viewer">
+    <div class="magazine-iframe-wrap" id="magazineWrap">
+      <iframe
+        id="magazineFrame"
+        src="../magazine/housing-market-magazine.html"
+        title="Research Magazine"
+      ></iframe>
+    </div>
+    <div class="magazine-controls">
+      <div class="mag-nav">
+        <button class="mag-btn" id="prevBtn" disabled onclick="changePage(-1)">&#9664;</button>
+        <span class="mag-page" id="pageIndicator">1 / 3</span>
+        <button class="mag-btn" id="nextBtn" onclick="changePage(1)">&#9654;</button>
+      </div>
+      <div class="mag-actions">
+        <button class="mag-action-btn" onclick="openFullscreen()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+          전체화면
+        </button>
+        <button class="mag-action-btn primary" onclick="downloadPDF()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          PDF 다운로드
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <strong>성균관대학교 학술정보관</strong> &middot; BIBLO Research Intelligence<br>
+  &copy; 2026 Sungkyunkwan University Library. All rights reserved.
+</footer>
+
+<script>
+  // ===== Magazine Page Navigation =====
+  let currentPage = 1;
+  const totalPages = 3;
+  const pageHeightMM = 297;
+
+  function changePage(delta) {
+    const newPage = currentPage + delta;
+    if (newPage < 1 || newPage > totalPages) return;
+    currentPage = newPage;
+
+    const iframe = document.getElementById('magazineFrame');
+    const scrollTop = (currentPage - 1) * pageHeightMM * 3.7795275591; // mm to px at 96dpi
+    iframe.contentWindow.scrollTo({ top: scrollTop, behavior: 'smooth' });
+
+    document.getElementById('pageIndicator').textContent = currentPage + ' / ' + totalPages;
+    document.getElementById('prevBtn').disabled = currentPage === 1;
+    document.getElementById('nextBtn').disabled = currentPage === totalPages;
+  }
+
+  function openFullscreen() {
+    const wrap = document.getElementById('magazineWrap');
+    if (wrap.requestFullscreen) wrap.requestFullscreen();
+    else if (wrap.webkitRequestFullscreen) wrap.webkitRequestFullscreen();
+  }
+
+  function downloadPDF() {
+    const iframe = document.getElementById('magazineFrame');
+    iframe.contentWindow.print();
+  }
+
+  // Scale iframe to fit container
+  function scaleMagazine() {
+    const wrap = document.getElementById('magazineWrap');
+    const iframe = document.getElementById('magazineFrame');
+    const containerWidth = wrap.clientWidth;
+    const iframeWidthPx = 210 * 3.7795275591; // 210mm in px
+    const scale = Math.min(containerWidth / iframeWidthPx, 1);
+
+    iframe.style.transform = 'translateX(-50%) scale(' + scale + ')';
+    iframe.style.transformOrigin = 'top center';
+
+    // Adjust container height to match scaled page
+    const pageHeightPx = 297 * 3.7795275591;
+    wrap.style.height = (pageHeightPx * scale) + 'px';
+  }
+
+  window.addEventListener('load', scaleMagazine);
+  window.addEventListener('resize', scaleMagazine);
+</script>
+
+</body>
+</html>

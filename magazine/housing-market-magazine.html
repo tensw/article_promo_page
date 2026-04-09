@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE RESEARCH DAILY - Housing Market &amp; Financial Stability</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  @page { size: A4; margin: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #1a1a1a;
+    background: #f5f5f0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    overflow: hidden;
+    margin: 0 auto;
+    background: #faf9f6;
+    padding: 24mm 22mm 18mm 22mm;
+    position: relative;
+    page-break-after: always;
+    break-after: page;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+
+  @media screen {
+    .page { margin-bottom: 30px; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+  }
+  @media print {
+    body { background: white; }
+    .page { margin: 0; box-shadow: none; }
+  }
+
+  /* ===== Masthead ===== */
+  .masthead { text-align: center; margin-bottom: 12px; }
+  .masthead-date { font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: #666; margin-bottom: 4px; }
+  .masthead-title { font-size: 38px; font-weight: 700; letter-spacing: 2px; line-height: 1.1; }
+  .masthead-subtitle { font-size: 8px; letter-spacing: 2.5px; text-transform: uppercase; color: #888; margin-top: 4px; }
+  .masthead-divider { border: none; border-top: 2.5px solid #1a1a1a; margin: 10px 0; }
+  .masthead-divider-thin { border: none; border-top: 0.5px solid #1a1a1a; margin: 0 0 14px 0; }
+  .page-tag { font-size: 7.5px; color: #999; letter-spacing: 1px; margin-bottom: 6px; }
+
+  /* ===== Paper Meta ===== */
+  .paper-source { font-size: 12px; font-weight: 700; color: #2c5282; letter-spacing: 1px; margin-bottom: 3px; }
+  .paper-title { font-size: 20px; font-weight: 700; line-height: 1.35; margin-bottom: 6px; }
+  .paper-authors { font-size: 10px; color: #666; margin-bottom: 16px; line-height: 1.6; }
+
+  /* ===== Metric Cards ===== */
+  .metric-cards {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+    border-top: 1.5px solid #1a1a1a; border-bottom: 1.5px solid #1a1a1a;
+    margin-bottom: 18px; padding: 12px 0;
+  }
+  .metric-card { text-align: center; border-right: 0.5px solid #ddd; padding: 0 8px; }
+  .metric-card:last-child { border-right: none; }
+  .metric-value { font-size: 24px; font-weight: 700; line-height: 1.2; }
+  .metric-label { font-size: 7.5px; text-transform: uppercase; letter-spacing: 1.5px; color: #888; margin-top: 3px; }
+
+  /* ===== Section Headers ===== */
+  .section-header {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    border-bottom: 1.5px solid #1a1a1a; padding-bottom: 5px;
+    margin-bottom: 12px; margin-top: 20px;
+  }
+  .section-header:first-child, .section-header.no-top { margin-top: 0; }
+
+  /* ===== AI Summary ===== */
+  .ai-summary { background: #f0ede6; padding: 12px 16px; margin-bottom: 18px; border-left: 3px solid #2c5282; }
+  .ai-summary p { font-size: 11.5px; line-height: 1.7; color: #333; }
+
+  /* ===== Research Type Badge ===== */
+  .type-badge-container {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 18px; padding: 10px 16px;
+    background: #f7f6f3; border: 0.5px solid #e0ddd6;
+  }
+  .type-icon {
+    width: 34px; height: 34px; background: #2c5282;
+    display: flex; align-items: center; justify-content: center; transform: rotate(45deg); flex-shrink: 0;
+  }
+  .type-icon-inner { color: white; font-size: 15px; transform: rotate(-45deg); }
+  .type-info h3 { font-size: 14px; font-weight: 700; }
+  .type-info p { font-size: 10px; color: #666; margin-top: 2px; }
+
+  /* ===== Bar Chart ===== */
+  .bar-chart { margin-bottom: 18px; }
+  .bar-row { display: grid; grid-template-columns: 140px 1fr 42px; align-items: center; margin-bottom: 7px; font-size: 11px; }
+  .bar-label { color: #333; }
+  .bar-track { height: 16px; background: #eee; }
+  .bar-fill { height: 100%; background: #4a5568; }
+  .bar-value { text-align: right; font-weight: 700; font-size: 11px; }
+
+  /* ===== Two-Column Tables ===== */
+  .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 18px; }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table-header { font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #555; margin-bottom: 7px; }
+  .data-table td { font-size: 11px; padding: 5px 0; border-bottom: 0.5px solid #e8e6e0; }
+  .data-table td:last-child { text-align: right; font-weight: 700; }
+
+  /* ===== Flow Diagram ===== */
+  .flow-diagram { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 0; }
+  .flow-step { text-align: center; position: relative; }
+  .flow-box {
+    background: #f0ede6; border: 0.5px solid #d4d0c8; padding: 10px 6px;
+    font-size: 9px; line-height: 1.45; min-height: 54px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .flow-box.highlight { background: #2c5282; color: white; border-color: #2c5282; }
+  .flow-num { font-size: 7.5px; color: #999; margin-bottom: 3px; letter-spacing: 1px; }
+  .flow-arrow { position: absolute; right: -11px; top: 55%; transform: translateY(-50%); color: #999; font-size: 11px; z-index: 1; }
+
+  /* ===== Key Findings ===== */
+  .findings-list { margin-bottom: 16px; }
+  .finding-item { display: grid; grid-template-columns: 20px 1fr; gap: 8px; margin-bottom: 9px; align-items: start; }
+  .finding-num { font-size: 17px; font-weight: 700; color: #2c5282; line-height: 1; }
+  .finding-text { font-size: 11px; line-height: 1.6; color: #333; }
+  .finding-text strong { color: #1a1a1a; }
+
+  /* ===== Risk Bars ===== */
+  .risk-row { display: grid; grid-template-columns: 110px 1fr 55px; align-items: center; margin-bottom: 7px; }
+  .risk-label { font-size: 11px; color: #333; }
+  .risk-track { height: 11px; background: #eee; }
+  .risk-fill { height: 100%; }
+  .risk-fill.high { background: #c53030; }
+  .risk-fill.medium { background: #d69e2e; }
+  .risk-verdict { text-align: right; font-size: 10px; font-weight: 700; }
+
+  /* ===== Strengths & Limitations ===== */
+  .sl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
+  .sl-column h4 { font-size: 11px; font-weight: 700; margin-bottom: 7px; }
+  .sl-column h4.strength { color: #2c5282; }
+  .sl-column h4.limitation { color: #c53030; }
+  .sl-column ul { list-style: none; padding: 0; }
+  .sl-column li {
+    font-size: 10.5px; line-height: 1.55; padding: 4px 0 4px 14px;
+    border-bottom: 0.5px solid #eee; position: relative;
+  }
+  .sl-column li::before { position: absolute; left: 0; font-size: 10px; }
+  .sl-column.strengths li::before { content: "\2713"; color: #2c5282; }
+  .sl-column.limitations li::before { content: "\0021"; color: #c53030; font-weight: 700; }
+
+  /* ===== Methodology ===== */
+  .method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+  .method-item h4 { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: #888; margin-bottom: 4px; }
+  .method-item p { font-size: 10.5px; line-height: 1.6; color: #333; }
+
+  /* ===== Ref Analysis ===== */
+  .ref-analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 16px; }
+  .ref-stat-row { display: flex; justify-content: space-between; font-size: 10.5px; padding: 4px 0; border-bottom: 0.5px solid #eee; }
+  .ref-stat-row span:last-child { font-weight: 700; }
+
+  /* ===== Implications Grid ===== */
+  .impl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+  .impl-card { background: #f7f6f3; border: 0.5px solid #e0ddd6; padding: 12px 14px; }
+  .impl-card h4 { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #2c5282; margin-bottom: 6px; }
+  .impl-card p { font-size: 10px; line-height: 1.6; color: #444; }
+
+  /* ===== Roadmap ===== */
+  .roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 0; }
+  .roadmap-card { border: 0.5px solid #d4d0c8; padding: 12px 14px; }
+  .roadmap-card h4 { font-size: 11px; font-weight: 700; margin-bottom: 2px; }
+  .roadmap-card .road-sub { font-size: 9px; color: #2c5282; font-weight: 700; margin-bottom: 6px; }
+  .roadmap-card p { font-size: 9.5px; line-height: 1.55; color: #555; }
+
+  /* ===== Keywords ===== */
+  .keywords-cloud { text-align: center; padding: 16px 0; margin-bottom: 18px; line-height: 2; }
+  .kw-xl { font-size: 26px; font-weight: 700; color: #1a1a1a; }
+  .kw-lg { font-size: 20px; font-weight: 700; color: #333; }
+  .kw-md { font-size: 16px; font-weight: 400; color: #555; }
+  .kw-sm { font-size: 13px; font-weight: 400; color: #777; }
+
+  /* ===== Reference Papers ===== */
+  .ref-table { width: 100%; border-collapse: collapse; margin-bottom: 18px; }
+  .ref-table thead td { font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: #999; padding-bottom: 5px; border-bottom: 1px solid #1a1a1a; }
+  .ref-table tbody tr { border-bottom: 0.5px solid #e8e6e0; }
+  .ref-table tbody td { padding: 7px 0; vertical-align: top; }
+  .ref-num { font-size: 10.5px; color: #999; width: 22px; }
+  .ref-title { font-size: 10.5px; font-weight: 700; line-height: 1.45; }
+  .ref-meta { font-size: 9px; color: #888; margin-top: 2px; }
+  .ref-context { font-size: 9.5px; color: #666; text-align: right; width: 85px; }
+
+  /* ===== Outlook ===== */
+  .outlook-box { background: #f0ede6; padding: 14px 18px; border-left: 3px solid #2c5282; margin-bottom: 0; }
+  .outlook-box p { font-size: 10.5px; line-height: 1.7; color: #333; margin-bottom: 8px; }
+  .outlook-box p:last-child { margin-bottom: 0; }
+
+  /* ===== Footer ===== */
+  .page-footer {
+    position: absolute; bottom: 12mm; left: 22mm; right: 22mm;
+    display: flex; justify-content: space-between;
+    font-size: 7.5px; color: #aaa; border-top: 0.5px solid #ddd; padding-top: 5px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1: PAPER PROFILE ==================== -->
+<div class="page" id="page1">
+
+  <div class="masthead">
+    <div class="masthead-date">Thursday, April 9, 2026</div>
+    <div class="masthead-title">THE RESEARCH DAILY</div>
+    <div class="masthead-subtitle">Paper Analysis &middot; Key Findings &middot; Research Outlook</div>
+  </div>
+  <hr class="masthead-divider">
+  <hr class="masthead-divider-thin">
+
+  <div class="paper-source">BANK OF KOREA</div>
+  <div class="paper-title">Characteristics of Recent Housing Market and Impact on Financial System</div>
+  <div class="paper-authors">
+    Kim Dongwook &middot; Kim Woo-seob &middot; Financial Stability Analysis Team, Bank of Korea<br>
+    Financial Stability Report, December 2025 &middot; pp. 115&ndash;125
+  </div>
+
+  <div class="metric-cards">
+    <div class="metric-card">
+      <div class="metric-value">10</div>
+      <div class="metric-label">References</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">11</div>
+      <div class="metric-label">Pages</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value">17</div>
+      <div class="metric-label">Figures</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value" style="font-size:17px;">Policy<br>Analysis</div>
+      <div class="metric-label">Research Type</div>
+    </div>
+  </div>
+
+  <div class="section-header no-top">AI Core Summary</div>
+  <div class="ai-summary">
+    <p>한국 주택시장은 서울 수도권과 비수도권 간 극심한 양극화를 보이며, 전세에서 월세로의 구조적 전환이 가속화되고 있다. 서울 주택가격 상승에도 가계부채 증가가 동조하지 않는 비동조화 현상이 나타나고 있으나, 가격 상승의 타 지역 확산 시 부채 재확대와 금융 불안정 심화 가능성이 존재한다.</p>
+  </div>
+
+  <div class="section-header">Research Type</div>
+  <div class="type-badge-container">
+    <div class="type-icon"><span class="type-icon-inner">&#9670;</span></div>
+    <div class="type-info">
+      <h3>거시건전성 정책분석</h3>
+      <p>실증 데이터 기반 주택시장 구조 변화 분석 및 금융안정 리스크 평가 &mdash; 정책 시사점 도출형 연구</p>
+    </div>
+  </div>
+
+  <div class="section-header">Research Field Allocation</div>
+  <div class="bar-chart">
+    <div class="bar-row">
+      <span class="bar-label">Financial Stability</span>
+      <div class="bar-track"><div class="bar-fill" style="width:40%;"></div></div>
+      <span class="bar-value">40%</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Housing Economics</span>
+      <div class="bar-track"><div class="bar-fill" style="width:30%;"></div></div>
+      <span class="bar-value">30%</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Macroprudential Policy</span>
+      <div class="bar-track"><div class="bar-fill" style="width:20%;"></div></div>
+      <span class="bar-value">20%</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Household Finance</span>
+      <div class="bar-track"><div class="bar-fill" style="width:10%;"></div></div>
+      <span class="bar-value">10%</span>
+    </div>
+  </div>
+
+  <div class="two-col-grid">
+    <div>
+      <div class="data-table-header">Paper Structure</div>
+      <table class="data-table">
+        <tr><td>Background</td><td>2025년 주택시장 변동성</td></tr>
+        <tr><td>Research Purpose</td><td>구조 변화 및 리스크 평가</td></tr>
+        <tr><td>Methodology</td><td>시계열 분석, 지역비교</td></tr>
+        <tr><td>Key Results</td><td>3대 구조적 특징 도출</td></tr>
+        <tr><td>Conclusion</td><td>거시건전성 정책 제언</td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="data-table-header">Research Scope</div>
+      <table class="data-table">
+        <tr><td>Geographic Coverage</td><td>전국 (서울/비수도권)</td></tr>
+        <tr><td>Time Period</td><td>2020&ndash;2025</td></tr>
+        <tr><td>Data Sources</td><td>한국은행, 국토부, 통계청</td></tr>
+        <tr><td>Analysis Units</td><td>17개 광역시도</td></tr>
+        <tr><td>Key Indicators</td><td>주택가격, 가계부채, 전월세</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-header">Research Structure</div>
+  <div class="flow-diagram">
+    <div class="flow-step">
+      <div class="flow-num">01</div>
+      <div class="flow-box">2025 주택시장<br>변동성 심화</div>
+      <span class="flow-arrow">&#9654;</span>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">02</div>
+      <div class="flow-box">지역별 양극화<br>+ 전월세 전환</div>
+      <span class="flow-arrow">&#9654;</span>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">03</div>
+      <div class="flow-box highlight">가격-부채<br>비동조화 분석</div>
+      <span class="flow-arrow">&#9654;</span>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">04</div>
+      <div class="flow-box">금융안정<br>리스크 평가</div>
+      <span class="flow-arrow">&#9654;</span>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">05</div>
+      <div class="flow-box">거시건전성<br>정책 방향 제시</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>BIBLO Research Analytics &middot; Bank of Korea</span>
+    <span>Generated 2026. 4. 9. &middot; FOR RESEARCH PLANNING PURPOSES</span>
+    <span>1/3</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 2: ANALYSIS ==================== -->
+<div class="page" id="page2">
+
+  <div class="page-tag">BIBLO | Research Intelligence</div>
+
+  <div class="section-header no-top">Key Findings</div>
+  <div class="findings-list">
+    <div class="finding-item">
+      <span class="finding-num">1</span>
+      <div class="finding-text"><strong>서울-비수도권 주택가격 극심한 양극화:</strong> 2024.1~2025.10 서울 주택매매가격 +18.2% 상승, 비수도권 -2.0% 하락. 서울 아파트 시가총액 비중 43.3%로 역대 최고 경신.</div>
+    </div>
+    <div class="finding-item">
+      <span class="finding-num">2</span>
+      <div class="finding-text"><strong>전세→월세 구조적 전환 가속:</strong> 월세 거래 비중이 장기평균 38.5%에서 60.2%로 급등. 전세사기 우려, 전세대출 규제 강화, 임대인의 월세 선호가 복합 작용.</div>
+    </div>
+    <div class="finding-item">
+      <span class="finding-num">3</span>
+      <div class="finding-text"><strong>주택가격-가계부채 비동조화:</strong> GDP 대비 가계부채 비율 하락 중에도 서울 주택가격은 가속 상승. 자기자금 거래 비중 확대(41.3%)가 주요 원인.</div>
+    </div>
+    <div class="finding-item">
+      <span class="finding-num">4</span>
+      <div class="finding-text"><strong>비수도권 금융기관 건전성 악화:</strong> 대구(-26.6%), 부산(-18.0%) 등 5대 비수도권 주택가격 고점 대비 20% 이상 하락. 담보가치 하락에 따른 부실채권 확대 우려.</div>
+    </div>
+    <div class="finding-item">
+      <span class="finding-num">5</span>
+      <div class="finding-text"><strong>저소득층 주거비 부담 심화:</strong> 전세→월세 전환 시 1분위(저소득) 가구 주거비 비중 17.4%→29.4%로 급증.</div>
+    </div>
+  </div>
+
+  <div class="section-header">Paper Quality Assessment</div>
+  <div style="margin-bottom:16px;">
+    <div class="risk-row">
+      <span class="risk-label">데이터 충실도</span>
+      <div class="risk-track"><div class="risk-fill" style="width:90%;background:#2c5282;"></div></div>
+      <span class="risk-verdict" style="color:#2c5282;">매우 높음</span>
+    </div>
+    <div class="risk-row">
+      <span class="risk-label">분석 견고성</span>
+      <div class="risk-track"><div class="risk-fill" style="width:75%;background:#2c5282;"></div></div>
+      <span class="risk-verdict" style="color:#2c5282;">높음</span>
+    </div>
+    <div class="risk-row">
+      <span class="risk-label">정책 적실성</span>
+      <div class="risk-track"><div class="risk-fill" style="width:85%;background:#2c5282;"></div></div>
+      <span class="risk-verdict" style="color:#2c5282;">높음</span>
+    </div>
+    <div class="risk-row">
+      <span class="risk-label">참신성</span>
+      <div class="risk-track"><div class="risk-fill medium" style="width:60%;"></div></div>
+      <span class="risk-verdict" style="color:#d69e2e;">보통</span>
+    </div>
+  </div>
+
+  <div class="section-header">Strengths &amp; Limitations</div>
+  <div class="sl-grid">
+    <div class="sl-column strengths">
+      <h4 class="strength">Strengths</h4>
+      <ul>
+        <li>17개 Figure로 주장을 데이터로 뒷받침</li>
+        <li>서울-비수도권 양방향 리스크 동시 분석</li>
+        <li>가격-부채 비동조화라는 새로운 구조적 특징 포착</li>
+        <li>소득분위별 영향 분석으로 분배적 시사점 도출</li>
+        <li>강남3구 가격 파급의 선행-후행 관계 실증</li>
+      </ul>
+    </div>
+    <div class="sl-column limitations">
+      <h4 class="limitation">Limitations</h4>
+      <ul>
+        <li>비동조화 지속가능성에 대한 계량적 검증 부족</li>
+        <li>국제 비교 분석 미포함</li>
+        <li>금리 경로별 시나리오 분석 미수행</li>
+        <li>비수도권 개별 지역 심층분석 제한적</li>
+        <li>정책 효과의 정량적 추정 미제시</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-header">Reference Analysis</div>
+  <div class="ref-analysis-grid">
+    <div>
+      <div class="ref-stat-row"><span>Total References</span><span>10</span></div>
+      <div class="ref-stat-row"><span>BOK Internal Reports</span><span>5 (50%)</span></div>
+      <div class="ref-stat-row"><span>Academic Papers</span><span>3 (30%)</span></div>
+      <div class="ref-stat-row"><span>Research Institute</span><span>2 (20%)</span></div>
+      <div class="ref-stat-row"><span>Time Range</span><span>2017&ndash;2025</span></div>
+      <div class="ref-stat-row"><span>Self-Citation</span><span>50%</span></div>
+    </div>
+    <div>
+      <div class="data-table-header">Top References</div>
+      <table class="data-table">
+        <tr><td>Choi et al. (2025)</td><td style="font-size:9px;color:#666;">거시건전성 정책</td></tr>
+        <tr><td>Kim et al. (2022)</td><td style="font-size:9px;color:#666;">주택가격 파급효과</td></tr>
+        <tr><td>Ko et al. (2025)</td><td style="font-size:9px;color:#666;">주택시장 양극화</td></tr>
+        <tr><td>Lee (2025)</td><td style="font-size:9px;color:#666;">지역 주거 사이클</td></tr>
+        <tr><td>Son (2023)</td><td style="font-size:9px;color:#666;">전월세 전환 분석</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section-header">Methodology</div>
+  <div class="method-grid" style="margin-bottom:0;">
+    <div class="method-item">
+      <h4>Analysis Framework</h4>
+      <p>주택시장 구조 변화를 3대 축(지역 양극화, 전월세 전환, 가격-부채 비동조화)으로 분해하여 금융안정 리스크를 체계적으로 평가</p>
+    </div>
+    <div class="method-item">
+      <h4>Data &amp; Methods</h4>
+      <p>한국부동산원 가격지수, 한국은행 가계대출 통계, 국토부 실거래 데이터, 가계금융복지조사 활용. 시계열 비교, 교차상관분석, 지역별 분해 분석</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>BIBLO Research Analytics &middot; Bank of Korea</span>
+    <span>Generated 2026. 4. 9. &middot; FOR RESEARCH PLANNING PURPOSES</span>
+    <span>2/3</span>
+  </div>
+</div>
+
+<!-- ==================== PAGE 3: OUTLOOK ==================== -->
+<div class="page" id="page3">
+
+  <div class="page-tag">BIBLO | Research Intelligence</div>
+
+  <div class="section-header no-top">Practical Implications</div>
+  <div class="impl-grid">
+    <div class="impl-card">
+      <h4>Policy Makers</h4>
+      <p>서울 중심 금융불균형 해소와 비수도권 주택시장 연착륙을 위한 차별화된 거시건전성 정책 필요. 월세 전환에 따른 저소득층 주거비 부담 완화 대책 시급.</p>
+    </div>
+    <div class="impl-card">
+      <h4>Financial Sector</h4>
+      <p>비수도권 담보대출 부실 리스크 선제 관리 필요. 지역 저축은행·상호금융의 건설업·부동산 익스포저 점검. 서울 주택담보대출 LTV 관리 강화.</p>
+    </div>
+    <div class="impl-card">
+      <h4>Academic Research</h4>
+      <p>주택가격-가계부채 비동조화 현상의 이론적 프레임워크 구축 필요. 전월세 전환의 거시경제적 파급효과에 대한 일반균형 분석 연구 공백 존재.</p>
+    </div>
+  </div>
+
+  <div class="section-header">Follow-up Research Roadmap</div>
+  <div class="roadmap-grid">
+    <div class="roadmap-card">
+      <h4>Scenario A</h4>
+      <div class="road-sub">비동조화 메커니즘 심화 연구</div>
+      <p>자기자금 거래 확대의 구조적 원인 분석. 규제 지역 내 현금 거래 비중과 자산 불평등 간 관계를 미시 데이터로 실증 검증.</p>
+    </div>
+    <div class="roadmap-card">
+      <h4>Scenario B</h4>
+      <div class="road-sub">전월세 전환의 금융안정 영향</div>
+      <p>전세→월세 전환이 가계 소비, 무담보대출, 신용리스크에 미치는 경로를 가계패널 데이터로 추적. DSGE 모형 내 전월세 시장 통합.</p>
+    </div>
+    <div class="roadmap-card">
+      <h4>Scenario C</h4>
+      <div class="road-sub">지역 간 가격 파급 조기경보</div>
+      <p>강남3구→서울→수도권 파급 경로의 실시간 모니터링 시스템 개발. 네트워크 분석 기반 주택가격 전이 조기경보 모형 구축.</p>
+    </div>
+  </div>
+
+  <div class="section-header">Research Keywords</div>
+  <div class="keywords-cloud">
+    <span class="kw-xl">Housing Market</span>&nbsp;
+    <span class="kw-xl">Financial Stability</span>&nbsp;
+    <span class="kw-lg">Jeonse</span>&nbsp;
+    <span class="kw-lg">Regional Divergence</span>&nbsp;
+    <span class="kw-lg">Household Debt</span><br>
+    <span class="kw-md">Monthly Rent</span>&nbsp;
+    <span class="kw-md">Seoul</span>&nbsp;
+    <span class="kw-md">Macroprudential</span>&nbsp;
+    <span class="kw-md">Price Spillover</span><br>
+    <span class="kw-sm">Gangnam</span>&nbsp;
+    <span class="kw-sm">LTV</span>&nbsp;
+    <span class="kw-sm">Collateral</span>&nbsp;
+    <span class="kw-sm">Construction</span>&nbsp;
+    <span class="kw-sm">Gap Investment</span>&nbsp;
+    <span class="kw-sm">NBDIs</span>
+  </div>
+
+  <div class="section-header">AI Comprehensive Outlook</div>
+  <div class="outlook-box">
+    <p><strong>학술적 기여:</strong> 본 보고서는 2025년 한국 주택시장의 구조적 변화를 세 가지 축으로 체계화했다는 점에서 높은 진단적 가치를 지닌다. 특히 주택가격과 가계부채의 비동조화 현상은 기존 거시건전성 정책 프레임워크의 한계를 시사하며, 향후 학술적 논의의 중요한 출발점이 될 수 있다.</p>
+    <p><strong>정책적 가치:</strong> 서울과 비수도권에 대한 차별화된 거시건전성 접근의 필요성을 데이터로 뒷받침한 점, 전월세 전환이 저소득층에 미치는 분배적 영향을 소득분위별로 분석한 점은 정책 설계에 직접 활용 가능한 근거를 제공한다.</p>
+    <p><strong>향후 전망:</strong> 강남3구 발 가격 상승의 타 지역 파급 가능성, 대출규제 완화 시 부채 재확대 위험, 월세 전환에 따른 취약계층 주거불안정이 핵심 모니터링 포인트이다.</p>
+  </div>
+
+  <div class="page-footer">
+    <span>BIBLO Research Analytics &middot; Bank of Korea</span>
+    <span>Generated 2026. 4. 9. &middot; FOR RESEARCH PLANNING PURPOSES</span>
+    <span>3/3</span>
+  </div>
+</div>
+
+</body>
+</html>
