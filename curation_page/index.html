@@ -306,23 +306,69 @@
     box-shadow: 0 4px 24px rgba(0,0,0,0.06);
   }
 
-  .magazine-iframe-wrap {
-    width: 100%;
-    height: 750px;
-    overflow: hidden;
+  .magazine-spread-wrap {
     position: relative;
-    background: #e8e8e8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0;
+    background: #e0ddd8;
+    min-height: 500px;
+    overflow: hidden;
   }
 
-  .magazine-iframe-wrap iframe {
+  .spread-arrow {
     position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 210mm;
-    height: 297mm;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 48px;
+    height: 48px;
     border: none;
-    transform-origin: top center;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+
+  .spread-arrow.left { left: 16px; }
+  .spread-arrow.right { right: 16px; }
+
+  .spread-arrow:hover { background: rgba(0,0,0,0.6); }
+  .spread-arrow:disabled { opacity: 0.15; cursor: default; background: rgba(0,0,0,0.15); }
+
+  .magazine-spread {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    overflow: hidden;
+  }
+
+  .magazine-page {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    flex-shrink: 0;
+  }
+
+  .magazine-page iframe {
+    border: none;
+    width: 210mm;
+    height: 2970mm; /* 충분히 크게 — 전체 문서 포함 */
+    transform-origin: top left;
+    display: block;
+    pointer-events: none;
+  }
+
+  .magazine-page.empty {
+    background: transparent;
+    box-shadow: none;
   }
 
   .magazine-controls {
@@ -428,7 +474,7 @@
     .section { padding: 48px 20px; }
     .section-title { font-size: 22px; }
 
-    .magazine-iframe-wrap { height: 500px; }
+    .magazine-spread { flex-direction: column; align-items: center; padding: 16px; }
 
     .video-meta { grid-template-columns: 1fr; }
   }
@@ -525,22 +571,27 @@
 
 <!-- ===== MAGAZINE VIEWER ===== -->
 <hr class="section-divider">
-<section class="section">
-  <div class="section-label">Research Magazine</div>
-  <h2 class="section-title">AI 분석 리포트</h2>
-  <div class="magazine-viewer">
-    <div class="magazine-iframe-wrap" id="magazineWrap">
-      <iframe
-        id="magazineFrame"
-        src="../magazine/housing-market-magazine.html"
-        title="Research Magazine"
-      ></iframe>
+<section class="section" style="max-width:100%; padding-left:0; padding-right:0;">
+  <div style="max-width:var(--max-w); margin:0 auto; padding:0 24px;">
+    <div class="section-label">Research Magazine</div>
+    <h2 class="section-title">AI 분석 리포트</h2>
+  </div>
+  <div class="magazine-viewer" id="magazineViewer" style="border-radius:0; border-left:none; border-right:none;">
+    <div class="magazine-spread-wrap">
+      <button class="spread-arrow left" id="prevBtn" disabled onclick="changeSpread(-1)">&#9664;</button>
+      <div class="magazine-spread" id="magazineSpread">
+        <div class="magazine-page" id="pageLeft">
+          <iframe src="../magazine/housing-market-magazine.html" title="Magazine Left" scrolling="no"></iframe>
+        </div>
+        <div class="magazine-page" id="pageRight">
+          <iframe src="../magazine/housing-market-magazine.html" title="Magazine Right" scrolling="no"></iframe>
+        </div>
+      </div>
+      <button class="spread-arrow right" id="nextBtn" onclick="changeSpread(1)">&#9654;</button>
     </div>
     <div class="magazine-controls">
       <div class="mag-nav">
-        <button class="mag-btn" id="prevBtn" disabled onclick="changePage(-1)">&#9664;</button>
-        <span class="mag-page" id="pageIndicator">1 / 3</span>
-        <button class="mag-btn" id="nextBtn" onclick="changePage(1)">&#9654;</button>
+        <span class="mag-page" id="pageIndicator">1&ndash;2 / 3</span>
       </div>
       <div class="mag-actions">
         <button class="mag-action-btn" onclick="openFullscreen()">
@@ -563,50 +614,87 @@
 </footer>
 
 <script>
-  // ===== Magazine Page Navigation =====
-  let currentPage = 1;
-  const totalPages = 3;
-  const pageHeightMM = 297;
+  // ===== Magazine 2-Page Spread (CSS Transform) =====
+  var totalPages = 3;
+  var mmToPx = 3.7795275591;
+  var pageW = 210 * mmToPx;   // ~794px
+  var pageH = 297 * mmToPx;   // ~1123px
 
-  function changePage(delta) {
-    const newPage = currentPage + delta;
-    if (newPage < 1 || newPage > totalPages) return;
-    currentPage = newPage;
+  var spreads = [[1, 2], [3, 0]];
+  var currentSpread = 0;
+  var currentScale = 0.5;
 
-    const iframe = document.getElementById('magazineFrame');
-    const scrollTop = (currentPage - 1) * pageHeightMM * 3.7795275591; // mm to px at 96dpi
-    iframe.contentWindow.scrollTo({ top: scrollTop, behavior: 'smooth' });
+  function applyPageTransform(pageEl, pageNum) {
+    var iframe = pageEl.querySelector('iframe');
+    if (!iframe) return;
+    var offsetY = (pageNum - 1) * 297; // mm 단위
+    iframe.style.transform = 'scale(' + currentScale + ') translateY(-' + offsetY + 'mm)';
+    iframe.style.transformOrigin = 'top left';
+  }
 
-    document.getElementById('pageIndicator').textContent = currentPage + ' / ' + totalPages;
-    document.getElementById('prevBtn').disabled = currentPage === 1;
-    document.getElementById('nextBtn').disabled = currentPage === totalPages;
+  function renderSpread() {
+    var spread = spreads[currentSpread];
+    var leftEl = document.getElementById('pageLeft');
+    var rightEl = document.getElementById('pageRight');
+
+    // Left page
+    leftEl.classList.remove('empty');
+    leftEl.style.display = 'block';
+    applyPageTransform(leftEl, spread[0]);
+
+    // Right page
+    if (spread[1] === 0) {
+      rightEl.classList.add('empty');
+      rightEl.querySelector('iframe').style.visibility = 'hidden';
+    } else {
+      rightEl.classList.remove('empty');
+      rightEl.querySelector('iframe').style.visibility = 'visible';
+      applyPageTransform(rightEl, spread[1]);
+    }
+
+    // Indicator
+    var label = spread[1] === 0
+      ? spread[0] + ' / ' + totalPages
+      : spread[0] + '\u2013' + spread[1] + ' / ' + totalPages;
+    document.getElementById('pageIndicator').textContent = label;
+    document.getElementById('prevBtn').disabled = currentSpread === 0;
+    document.getElementById('nextBtn').disabled = currentSpread === spreads.length - 1;
+  }
+
+  function changeSpread(delta) {
+    var next = currentSpread + delta;
+    if (next < 0 || next >= spreads.length) return;
+    currentSpread = next;
+    renderSpread();
+  }
+
+  function scaleMagazine() {
+    var spreadEl = document.getElementById('magazineSpread');
+    var containerWidth = spreadEl.clientWidth;
+    var twoPageWidth = pageW * 2;
+    currentScale = Math.min(containerWidth / twoPageWidth, 1);
+
+    var scaledW = pageW * currentScale;
+    var scaledH = pageH * currentScale;
+
+    var pages = spreadEl.querySelectorAll('.magazine-page');
+    pages.forEach(function(page) {
+      page.style.width = scaledW + 'px';
+      page.style.height = scaledH + 'px';
+    });
+
+    renderSpread();
   }
 
   function openFullscreen() {
-    const wrap = document.getElementById('magazineWrap');
-    if (wrap.requestFullscreen) wrap.requestFullscreen();
-    else if (wrap.webkitRequestFullscreen) wrap.webkitRequestFullscreen();
+    var viewer = document.getElementById('magazineViewer');
+    if (viewer.requestFullscreen) viewer.requestFullscreen();
+    else if (viewer.webkitRequestFullscreen) viewer.webkitRequestFullscreen();
   }
 
   function downloadPDF() {
-    const iframe = document.getElementById('magazineFrame');
-    iframe.contentWindow.print();
-  }
-
-  // Scale iframe to fit container
-  function scaleMagazine() {
-    const wrap = document.getElementById('magazineWrap');
-    const iframe = document.getElementById('magazineFrame');
-    const containerWidth = wrap.clientWidth;
-    const iframeWidthPx = 210 * 3.7795275591; // 210mm in px
-    const scale = Math.min(containerWidth / iframeWidthPx, 1);
-
-    iframe.style.transform = 'translateX(-50%) scale(' + scale + ')';
-    iframe.style.transformOrigin = 'top center';
-
-    // Adjust container height to match scaled page
-    const pageHeightPx = 297 * 3.7795275591;
-    wrap.style.height = (pageHeightPx * scale) + 'px';
+    var iframe = document.querySelector('#pageLeft iframe');
+    if (iframe && iframe.contentWindow) iframe.contentWindow.print();
   }
 
   window.addEventListener('load', scaleMagazine);
